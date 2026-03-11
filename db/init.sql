@@ -1,0 +1,2 @@
+-- Audit log + usage tables + tenant config for LLM Gateway
+-- TODO: Create audit_log, usage_aggregates, tenant_config tables
