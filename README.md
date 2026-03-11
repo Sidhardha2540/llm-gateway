@@ -38,8 +38,19 @@ llm-gateway/
 
 ## How to run
 
-*(TODO: docker-compose up instructions.)*
+1. Copy `.env.example` to `.env` and set `OPENAI_API_KEY` (and optionally `ANTHROPIC_API_KEY`).
+2. Start dependencies and app:
+   ```bash
+   docker-compose up -d postgres redis
+   # Create DB and run init.sql if needed, then:
+   docker-compose up --build app
+   ```
+   Or run everything: `docker-compose up --build`
+3. API: http://localhost:8000  
+   - Docs: http://localhost:8000/docs  
+   - Chat: `POST /v1/chat/completions` (OpenAI-compatible body; use header `X-Tenant-ID` for tenant).  
+   - Dashboard: `GET /dashboard/usage`, `/dashboard/latency`, `/dashboard/cache`, `/dashboard/errors`
 
 ## API documentation
 
-*(TODO: Link to Swagger after implementation.)*
+Swagger UI: http://localhost:8000/docs
