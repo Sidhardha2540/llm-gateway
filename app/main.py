@@ -10,6 +10,7 @@ from app.proxy import proxy_chat
 from app.observability.dashboard import router as dashboard_router
 from app.db import init_db, close_db
 from app.cache.redis_client import close_redis
+from app.schemas import ChatRequest
 
 
 @asynccontextmanager
@@ -36,10 +37,9 @@ async def health():
 
 
 @app.post("/v1/chat/completions")
-async def chat_completions(request: Request):
+async def chat_completions(request: Request, body: ChatRequest):
     """OpenAI-compatible chat completion endpoint. Use X-Tenant-ID header for tenant."""
-    body = await request.json()
-    return await proxy_chat(request, body)
+    return await proxy_chat(request, body.model_dump())
 
 
 @app.get("/")
