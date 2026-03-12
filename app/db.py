@@ -4,6 +4,7 @@ Uses asyncpg for async connection pool.
 """
 import os
 import asyncpg
+from datetime import date
 from contextlib import asynccontextmanager
 from typing import Optional
 
@@ -101,6 +102,7 @@ async def upsert_usage(
     cache_hits_delta: int = 0,
     errors_delta: int = 0,
 ) -> None:
+    usage_date = date.fromisoformat(date_str)
     pool = await init_db()
     async with pool.acquire() as conn:
         await conn.execute(
@@ -119,7 +121,7 @@ async def upsert_usage(
                 errors = usage_aggregates.errors + EXCLUDED.errors
             """,
             tenant_id,
-            date_str,
+            usage_date,
             provider,
             requests_delta,
             prompt_tokens_delta,
